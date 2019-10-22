@@ -14,12 +14,25 @@ from tqdm import tqdm
 class grid_search_kfoldcv():
 
     def __init__(self,model,params):
+        """
+            model : your initialized model.
+            params : your params in dict. 
+                    Example: 
+                    params = {
+                    'n_estimators' : [15,30,50,100],
+                    'num_leaves' : [2,5,10],
+                    'max_depth' : [2,3,5],
+                    'learning_rate' : [0.1,0.01,0.5]
+                    }
+        """
         self.model = model
         self.params = params
         self.results = []
 
     def kfoldcv(self,indices, k = 5, seed = 4242):
-        
+        """
+            k = Number of folds in your cross validation.
+        """
         size = len(indices)
         
         subset_size = round(size / k)
@@ -48,8 +61,11 @@ class grid_search_kfoldcv():
             
         return train,test
 
-    def fit(self,X,Y,cv=10,random=False,seed=42,max_random_iter=-1):
-
+    def fit(self,X,Y,cv=10,seed=42,max_random_iter=-1):
+        """
+            cv = number of folds.
+            max_random_iter = -1 if no randomized search, else the maximum iterations on your randomized search.
+        """
         kfold_ensembler = self.kfoldcv(list(X.index),k=cv)
         
         _results = []
@@ -96,6 +112,10 @@ class grid_search_kfoldcv():
         self.results = _results
     
     def display_results(self,on='DeltaTest'):
+        
+        """
+            Choose 'on' between ['Train','Test','Delta', 'DeltaTrain', 'DeltaTest'].
+        """
         
         assert on in ['Train','Test','Delta', 'DeltaTrain', 'DeltaTest'], "On option not in ['Train','Test','Delta', 'DeltaTrain', 'DeltaTest']" 
         
