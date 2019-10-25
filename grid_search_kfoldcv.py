@@ -76,7 +76,7 @@ class grid_search_kfoldcv():
             model_params_list = [dict(zip(self.params, v)) for v in product(*self.params.values())]
         else:
         
-            model_params_list = random.choices([dict(zip(params, v)) for v in product(*params.values())],k=max_random_iter )
+            model_params_list = random.choices([dict(zip(self.params, v)) for v in product(*self.params.values())],k=max_random_iter )
         
         for model_params in tqdm(model_params_list):
             
