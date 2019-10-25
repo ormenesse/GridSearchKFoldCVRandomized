@@ -10,6 +10,7 @@ from sklearn.metrics import roc_auc_score
 import random
 import pandas as pd
 from tqdm import tqdm
+import numpy as np
 
 class grid_search_kfoldcv():
 
@@ -72,7 +73,7 @@ class grid_search_kfoldcv():
         
         if max_random_iter == -1:
         
-            model_params_list = [dict(zip(params, v)) for v in product(*params.values())]
+            model_params_list = [dict(zip(self.params, v)) for v in product(*self.params.values())]
         else:
         
             model_params_list = random.choices([dict(zip(params, v)) for v in product(*params.values())],k=max_random_iter )
@@ -139,4 +140,3 @@ class grid_search_kfoldcv():
         
             return pd.DataFrame(self.results).sort_values(['Delta','Test'],ascending=[True,False])
         
-
