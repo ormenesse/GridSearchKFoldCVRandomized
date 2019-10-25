@@ -22,6 +22,10 @@ gds.fit(X,Y,cv=10)
 ```
 Display the best results in front considering ROC_AUC Delta between train and test (all aternatives are: 'Train','Test','Delta', 'DeltaTrain', 'DeltaTest'])
 
+```python
+gds.display_results(on='DeltaTest')
+```
+
 |Index    |Delta	|Test	|Train	|learning_rate|max_depth|n_estimators|num_leaves|
 | ------- |:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|:-------:|
 |13	|0.023513	|0.855080	|0.858969	|0.01	|3	|15	|5        |
