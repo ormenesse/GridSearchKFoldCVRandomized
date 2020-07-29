@@ -108,7 +108,7 @@ class grid_search_regressor_kfoldcv():
                 
                 delta = (delta*(i+1-1)+dt)/(i+1)
 
-            _results.append({**model_params,**{'Train':roc_train, 'Test':roc_test, 'Delta':delta}})
+            _results.append({**model_params,**{'Train':Rscore_train, 'Test':Rscore_test, 'Delta':delta}})
         
         self.results = _results
     
