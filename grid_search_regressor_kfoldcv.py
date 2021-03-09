@@ -99,9 +99,9 @@ class grid_search_regressor_kfoldcv():
                 
                 if self.error == 'rmsle':
                     
-                    r2_t = metrics.mean_squared_log_error(Y.iloc[train], self.model.predict(X.iloc[train]))
+                    r2_t = metrics.mean_squared_log_error(Y.iloc[train].abs(), self.model.predict(X.iloc[train].abs()))
                     
-                    r2_tt = metrics.mean_squared_log_error(Y.iloc[test], self.model.predict(X.iloc[test]))
+                    r2_tt = metrics.mean_squared_log_error(Y.iloc[test].abs(), self.model.predict(X.iloc[test].abs()))
                     
                 elif self.error == 'rmse':
                     
@@ -129,7 +129,7 @@ class grid_search_regressor_kfoldcv():
         
         self.results = _results
     
-    def display_results(self,on='DeltaTest'):
+    def display_results(self,on='DeltaTest',ascending=False):
         
         """
             Choose 'on' between ['Train','Test','Delta', 'DeltaTrain', 'DeltaTest'].
@@ -139,20 +139,20 @@ class grid_search_regressor_kfoldcv():
         
         if on == 'Delta':
         
-            return pd.DataFrame(self.results).sort_values('Delta',ascending=True)
+            return pd.DataFrame(self.results).sort_values('Delta',ascending=not ascending)
             
         elif on == 'Test':
         
-            return pd.DataFrame(self.results).sort_values('Test',ascending=False)
+            return pd.DataFrame(self.results).sort_values('Test',ascending=ascending)
             
         elif on == 'Train':
         
-            return pd.DataFrame(self.results).sort_values('Train',ascending=False)
+            return pd.DataFrame(self.results).sort_values('Train',ascending=ascending)
             
         elif on == 'DeltaTrain':
         
-            return pd.DataFrame(self.results).sort_values(['Delta','Train'],ascending=[True,False])
+            return pd.DataFrame(self.results).sort_values(['Delta','Train'],ascending=[not ascending,ascending])
             
         elif on == 'DeltaTest':
         
-            return pd.DataFrame(self.results).sort_values(['Delta','Test'],ascending=[True,False])
+            return pd.DataFrame(self.results).sort_values(['Delta','Test'],ascending=[not ascending,ascending])
