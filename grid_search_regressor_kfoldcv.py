@@ -1,6 +1,6 @@
 __author__ = "Vinicius Ormenesse"
 __license__ = "GPL"
-__version__ = "1.0.0"
+__version__ = "1.0.1"
 __maintainer__ = "Vinicius Ormenesse"
 __email__ = "vinicius.ormenesse@gmail.com"
 __status__ = "Done"
@@ -14,7 +14,7 @@ import sklearn.metrics as metrics
 
 class grid_search_regressor_kfoldcv():
 
-    def __init__(self,model,params):
+    def __init__(self,model,params,error='r2'):
         """
             model : your initialized model.
             params : your params in dict. 
@@ -28,6 +28,7 @@ class grid_search_regressor_kfoldcv():
         """
         self.model = model
         self.params = params
+        self.error = error
         self.results = []
 
     def kfoldcv(self,indices, k = 5, seed = 4242):
@@ -95,11 +96,27 @@ class grid_search_regressor_kfoldcv():
                 test = kfold_ensembler[1][i]
 
                 self.model.fit(X.iloc[train], Y.iloc[train])
+                
+                if self.error == 'rmsle':
+                    
+                    r2_t = metrics.mean_squared_log_error(Y.iloc[train], self.model.predict(X.iloc[train]))
+                    
+                    r2_tt = metrics.mean_squared_log_error(Y.iloc[test], self.model.predict(X.iloc[test]))
+                    
+                elif self.error == 'rmse':
+                    
+                    r2_t = metrics.mean_squared_error(Y.iloc[train], self.model.predict(X.iloc[train]))
+                    
+                    r2_tt = metrics.mean_squared_error(Y.iloc[test], self.model.predict(X.iloc[test]))
+                    
+                else:
 
-                r2_t = metrics.r2_score(Y.iloc[train], self.model.predict(X.iloc[train]))
+                    r2_t = metrics.r2_score(Y.iloc[train], self.model.predict(X.iloc[train]))
 
-                r2_tt = metrics.r2_score(Y.iloc[test], self.model.predict(X.iloc[test]))
-
+                    r2_tt = metrics.r2_score(Y.iloc[test], self.model.predict(X.iloc[test]))
+                
+                
+                
                 dt = np.abs(r2_t-r2_tt)
                 
                 Rscore_train = (Rscore_train*(i+1-1)+r2_t)/(i+1)
