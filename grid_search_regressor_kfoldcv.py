@@ -99,9 +99,9 @@ class grid_search_regressor_kfoldcv():
                 
                 if self.error == 'rmsle':
                     
-                    r2_t = metrics.mean_squared_log_error(Y.iloc[train].abs(), self.model.predict(X.iloc[train].abs()))
+                    r2_t = metrics.mean_squared_log_error(Y.iloc[train], self.model.predict(X.iloc[train]))
                     
-                    r2_tt = metrics.mean_squared_log_error(Y.iloc[test].abs(), self.model.predict(X.iloc[test].abs()))
+                    r2_tt = metrics.mean_squared_log_error(Y.iloc[test], self.model.predict(X.iloc[test]))
                     
                 elif self.error == 'rmse':
                     
